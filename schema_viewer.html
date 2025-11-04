@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Coach - System Architecture</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+        
+        .schema-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .entity-card {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .entity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-color: #007bff;
+        }
+        
+        .entity-header {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 15px 20px;
+            margin: -25px -25px 20px -25px;
+            border-radius: 10px 10px 0 0;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        
+        .attribute {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .attribute:last-child {
+            border-bottom: none;
+        }
+        
+        .attribute-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .pk { background: #28a745; color: white; }
+        .fk { background: #ffc107; color: #333; }
+        .attr { background: #6c757d; color: white; }
+        .enum { background: #17a2b8; color: white; }
+        
+        .attribute-name {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .relationships {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .relationships h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .relationship-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .architecture-link {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: #e3f2fd;
+            border-radius: 10px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏋️ Smart Coach System Architecture</h1>
+        
+        <div class="schema-grid">
+            <div class="entity-card">
+                <div class="entity-header">👤 User Entity</div>
+                <div class="attribute">
+                    <div class="attribute-icon pk">PK</div>
+                    <div class="attribute-name">userId (Long)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">fullName (String)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">email (String)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">password (String)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">dateOfBirth (LocalDate)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">height (Integer)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">weight (Integer)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">profilePictureUrl (String)</div>
+                </div>
+            </div>
+            
+            <div class="entity-card">
+                <div class="entity-header">🎯 Goal Entity</div>
+                <div class="attribute">
+                    <div class="attribute-icon pk">PK</div>
+                    <div class="attribute-name">goalId (Long)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon fk">FK</div>
+                    <div class="attribute-name">userId (Long)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon enum">E</div>
+                    <div class="attribute-name">type (GoalType)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">title (String)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">description (String)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">targetValue (Double)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">currentValue (Double)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">targetDate (LocalDate)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon enum">E</div>
+                    <div class="attribute-name">status (GoalStatus)</div>
+                </div>
+            </div>
+            
+            <div class="entity-card">
+                <div class="entity-header">💪 Workout Entity</div>
+                <div class="attribute">
+                    <div class="attribute-icon pk">PK</div>
+                    <div class="attribute-name">workoutId (Long)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon fk">FK</div>
+                    <div class="attribute-name">userId (Long)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">date (LocalDate)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">distance (Double)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">avgHeartRate (Integer)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">calories (Integer)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">location (String)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">weatherTemp (Integer)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">weatherHumidity (Integer)</div>
+                </div>
+            </div>
+            
+            <div class="entity-card">
+                <div class="entity-header">🍽️ Meal Entity</div>
+                <div class="attribute">
+                    <div class="attribute-icon pk">PK</div>
+                    <div class="attribute-name">mealId (Long)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon fk">FK</div>
+                    <div class="attribute-name">userId (Long)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">type (String)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">date (LocalDate)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">food (String)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">calories (Integer)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">protein (Integer)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">carbs (Integer)</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-icon attr">•</div>
+                    <div class="attribute-name">fat (Integer)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="relationships">
+            <h2>🔗 Entity Relationships</h2>
+            <div class="relationship-item">
+                <strong>User → Goals:</strong> One-to-Many (1:N) - A user can have multiple fitness goals
+            </div>
+            <div class="relationship-item">
+                <strong>User → Workouts:</strong> One-to-Many (1:N) - A user can log multiple workout sessions
+            </div>
+            <div class="relationship-item">
+                <strong>User → Meals:</strong> One-to-Many (1:N) - A user can track multiple meals daily
+            </div>
+        </div>
+        
+        <div class="relationships">
+            <h2>🔐 Authentication Flow</h2>
+            <div class="relationship-item">
+                <strong>Frontend:</strong> AuthContext manages JWT tokens, Auth Interceptor adds tokens to API requests
+            </div>
+            <div class="relationship-item">
+                <strong>Backend:</strong> JWT Filter validates tokens, TokenService generates/validates JWT tokens
+            </div>
+            <div class="relationship-item">
+                <strong>API Endpoints:</strong> /api/auth/login, /api/auth/register for authentication
+            </div>
+        </div>
+        
+        <div class="relationships">
+            <h2>🌐 API Client Architecture</h2>
+            <div class="relationship-item">
+                <strong>API Service:</strong> Central HTTP client for all backend communication
+            </div>
+            <div class="relationship-item">
+                <strong>Auth Interceptor:</strong> Automatically adds JWT tokens to protected API requests
+            </div>
+            <div class="relationship-item">
+                <strong>Mock API:</strong> Development fallback for frontend testing without backend
+            </div>
+        </div>
+        
+        <div class="architecture-link">
+            <h3>📊 Complete System Architecture</h3>
+            <p>Enhanced diagram includes: Database Schema, Authentication Flow, API Client, and JWT Token Management:</p>
+            <a href="smart_coach_system_architecture.png" class="btn" target="_blank">
+                View Enhanced Architecture Diagram
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -42,6 +42,19 @@ let mockDataStore = {
       fat: 8
     }
   ],
+  goals: [
+    {
+      goalId: 1,
+      userId: 1,
+      type: 'WEIGHT',
+      title: 'Lose 5kg',
+      description: 'Reach target weight by summer',
+      targetValue: 70,
+      currentValue: 75,
+      targetDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      status: 'ACTIVE'
+    }
+  ],
   preferences: {
     1: { theme: 'light' }
   }
@@ -330,6 +343,7 @@ export const getDashboardStats = async (userId) => {
   const today = new Date().toISOString().split('T')[0];
   const todayMeals = mockDataStore.meals.filter(m => m.userId === userId && m.date === today);
   const todayWorkouts = mockDataStore.workouts.filter(w => w.userId === userId && w.date === today);
+  const activeGoals = mockDataStore.goals.filter(g => g.userId === userId && g.status === 'ACTIVE');
 
   const totalCaloriesIn = todayMeals.reduce((sum, m) => sum + (m.calories || 0), 0);
   const totalCaloriesOut = todayWorkouts.reduce((sum, w) => sum + (w.calories || 0), 0);
@@ -343,7 +357,8 @@ export const getDashboardStats = async (userId) => {
       caloriesOut: totalCaloriesOut,
       netCalories: totalCaloriesIn - totalCaloriesOut,
       workoutCount: todayWorkouts.length,
-      mealCount: todayMeals.length
+      mealCount: todayMeals.length,
+      activeGoalsCount: activeGoals.length
     },
     status: 200
   };
@@ -374,6 +389,84 @@ export const getWeeklyTrends = async (userId) => {
   return { data: trends, status: 200 };
 };
 
+export const getGoalProgress = async (userId, goalId) => {
+  await simulateDelay();
+
+  const goal = mockDataStore.goals.find(g => g.goalId === parseInt(goalId) && g.userId === userId);
+  if (!goal) {
+    return { error: 'Goal not found', status: 404 };
+  }
+
+  const progressPercentage = Math.min((goal.currentValue / goal.targetValue) * 100, 100);
+  const daysRemaining = Math.ceil((new Date(goal.targetDate) - new Date()) / (1000 * 60 * 60 * 24));
+
+  return {
+    data: {
+      ...goal,
+      progressPercentage,
+      daysRemaining
+    },
+    status: 200
+  };
+};
+
+// ==================== GOALS ENDPOINTS ====================
+
+export const createGoal = async (userId, goalData) => {
+  await simulateDelay();
+
+  const goalId = Math.max(...mockDataStore.goals.map(g => g.goalId || 0)) + 1;
+
+  const goal = {
+    goalId,
+    userId,
+    type: goalData.type,
+    title: goalData.title,
+    description: goalData.description,
+    targetValue: goalData.targetValue,
+    currentValue: goalData.currentValue || 0,
+    targetDate: goalData.targetDate,
+    status: 'ACTIVE'
+  };
+
+  mockDataStore.goals.push(goal);
+  return { data: goal, status: 201 };
+};
+
+export const getGoals = async (userId) => {
+  await simulateDelay();
+
+  const goals = mockDataStore.goals.filter(g => g.userId === userId);
+  return { data: goals, status: 200 };
+};
+
+export const updateGoal = async (userId, goalId, updateData) => {
+  await simulateDelay();
+
+  const goalIndex = mockDataStore.goals.findIndex(g => g.goalId === parseInt(goalId) && g.userId === userId);
+  if (goalIndex === -1) {
+    return { error: 'Goal not found', status: 404 };
+  }
+
+  const goal = mockDataStore.goals[goalIndex];
+  if (updateData.currentValue !== undefined) goal.currentValue = updateData.currentValue;
+  if (updateData.status) goal.status = updateData.status;
+
+  return { data: goal, status: 200 };
+};
+
+export const deleteGoal = async (userId, goalId) => {
+  await simulateDelay();
+
+  const index = mockDataStore.goals.findIndex(g => g.goalId === parseInt(goalId) && g.userId === userId);
+  if (index === -1) {
+    return { error: 'Goal not found', status: 404 };
+  }
+
+  mockDataStore.goals.splice(index, 1);
+  return { status: 200 };
+};
+
 export default {
   authRegister,
   authLogin,
@@ -390,5 +483,10 @@ export default {
   getMeals,
   deleteMeal,
   getDashboardStats,
-  getWeeklyTrends
+  getWeeklyTrends,
+  createGoal,
+  getGoals,
+  updateGoal,
+  deleteGoal,
+  getGoalProgress
 };

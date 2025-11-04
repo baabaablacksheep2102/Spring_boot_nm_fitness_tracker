@@ -11,6 +11,7 @@ import ProfilePage from './pages/ProfilePage';
 import WorkoutUploadPage from './pages/WorkoutUploadPage';
 import WorkoutSummaryPage from './pages/WorkoutSummaryPage';
 import DietPlannerPage from './pages/DietPlannerPage';
+import GoalsPage from './pages/GoalsPage';
 
 // Components
 import Navbar from './components/Navbar';
@@ -42,6 +43,7 @@ function AppContent() {
           <Route path="/workout/upload" element={<ProtectedRoute><WorkoutUploadPage /></ProtectedRoute>} />
           <Route path="/workout/summary/:id" element={<ProtectedRoute><WorkoutSummaryPage /></ProtectedRoute>} />
           <Route path="/diet-planner" element={<ProtectedRoute><DietPlannerPage /></ProtectedRoute>} />
+          <Route path="/goals" element={<ProtectedRoute><GoalsPage /></ProtectedRoute>} />
           <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
         </Routes>
       </main>

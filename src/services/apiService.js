@@ -35,7 +35,14 @@ export const API = {
 
   // Dashboard
   getDashboardStats: (userId) => mockApi.getDashboardStats(userId),
-  getWeeklyTrends: (userId) => mockApi.getWeeklyTrends(userId)
+  getWeeklyTrends: (userId) => mockApi.getWeeklyTrends(userId),
+
+  // Goals
+  createGoal: (userId, goalData) => mockApi.createGoal(userId, goalData),
+  getGoals: (userId) => mockApi.getGoals(userId),
+  updateGoal: (userId, goalId, updateData) => mockApi.updateGoal(userId, goalId, updateData),
+  deleteGoal: (userId, goalId) => mockApi.deleteGoal(userId, goalId),
+  getGoalProgress: (userId, goalId) => mockApi.getGoalProgress(userId, goalId)
 };
 
 export default API;

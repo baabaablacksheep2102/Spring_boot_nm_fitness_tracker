@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { API } from '../services/apiService';
-import { TrendingUp, Flame, Footprints, Zap } from 'lucide-react';
+import { TrendingUp, Flame, Footprints, Zap, Target } from 'lucide-react';
 
 export default function DashboardPage() {
   const { user } = useContext(AuthContext);
@@ -51,7 +51,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -89,6 +89,16 @@ export default function DashboardPage() {
               <p className="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{stats?.netCalories || 0}</p>
             </div>
             <TrendingUp className="text-red-600" size={32} />
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Active Goals</p>
+              <p className="text-3xl font-bold text-purple-600 dark:text-purple-400 mt-2">{stats?.activeGoalsCount || 0}</p>
+            </div>
+            <Target className="text-purple-600" size={32} />
           </div>
         </div>
       </div>

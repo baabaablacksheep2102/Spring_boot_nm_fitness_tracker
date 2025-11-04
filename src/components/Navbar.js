@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import { ThemeContext } from '../contexts/ThemeContext';
-import { LogOut, User, Home, Utensils, Activity, Sun, Moon } from 'lucide-react';
+import { LogOut, User, Home, Utensils, Activity, Target, Sun, Moon } from 'lucide-react';
 
 export default function Navbar() {
   const { user, logout } = useContext(AuthContext);
@@ -34,6 +34,10 @@ export default function Navbar() {
             <Link to="/diet-planner" className="flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-blue-600">
               <Utensils size={20} />
               <span>Diet</span>
+            </Link>
+            <Link to="/goals" className="flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-blue-600">
+              <Target size={20} />
+              <span>Goals</span>
             </Link>
             
             <button

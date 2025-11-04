@@ -1,0 +1,14 @@
+com/smartcoach/backend/model/User.class
+com/smartcoach/backend/repository/MealRepository.class
+com/smartcoach/backend/model/Workout.class
+com/smartcoach/backend/repository/WorkoutRepository.class
+com/smartcoach/backend/repository/UserRepository.class
+com/smartcoach/backend/model/Meal.class
+com/smartcoach/backend/service/TokenService.class
+com/smartcoach/backend/config/WebConfig.class
+com/smartcoach/backend/SmartCoachApplication.class
+com/smartcoach/backend/controller/AuthController.class
+com/smartcoach/backend/controller/UserController.class
+com/smartcoach/backend/controller/DashboardController.class
+com/smartcoach/backend/controller/WorkoutController.class
+com/smartcoach/backend/controller/MealController.class
